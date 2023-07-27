@@ -1,13 +1,14 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import { type DocumentHead, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImage } from "~/components/pokemons/pokemon-image";
 
 export default component$(() => {
   //Señales y Store: para mantener el estado
 
+  const nav = useNavigate();
   const pokemonId = useSignal(1); //Para valores primitivos (bool, string, number)
   const showBackImage = useSignal(false);
-  const isPokeVisible = useSignal(false);
+  const isPokeVisible = useSignal(true);
   //Función envuelta en $ hace que sea serializable
   const changePokemonId = $((value: number) => {
     if (pokemonId.value + value <= 0) return;
@@ -15,18 +16,29 @@ export default component$(() => {
     pokemonId.value += value;
   });
 
+  const goToPokemon = $(() => {
+    nav(`pokemon/${pokemonId.value}/`);
+  });
+
   //para arreglos y objetos useStore();
 
   return (
     <>
-      <span class="text-5xl">Buscador simple</span>
+      <span class="text-5xl">PoKeKosas</span>
       <span class="text-9xl">{pokemonId}</span>
 
-      <PokemonImage
-        id={pokemonId.value}
-        backImage={showBackImage.value}
-        isVisible={isPokeVisible.value}
-      />
+      <div
+        style="border: 7px red solid"
+        onClick$={() => {
+          goToPokemon();
+        }}
+      >
+        <PokemonImage
+          id={pokemonId.value}
+          backImage={showBackImage.value}
+          isVisible={isPokeVisible.value}
+        />
+      </div>
 
       <div class="mt-2">
         <button

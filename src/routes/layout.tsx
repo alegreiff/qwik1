@@ -2,9 +2,6 @@ import { component$, Slot, useStyles$ } from "@builder.io/qwik";
 
 import type { RequestHandler } from "@builder.io/qwik-city";
 
-
-
-
 import styles from "./styles.css?inline";
 import Navbar from "~/components/shared/navbar/navbar";
 
@@ -19,16 +16,16 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
-
 export default component$(() => {
   useStyles$(styles);
   return (
     <>
       <Navbar />
-      <main class="flex flex-col items-center justify-center">
-        <Slot />
-      </main>
-
+      <div style="background-color: purple">
+        <main class="flex flex-col items-center justify-center">
+          <Slot />
+        </main>
+      </div>
     </>
   );
 });
