@@ -1,23 +1,24 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { type DocumentHead, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImage } from "~/components/pokemons/pokemon-image";
+import { usePokemonGame } from "~/hooks/use-pokemon-game";
 
 export default component$(() => {
   //Señales y Store: para mantener el estado
 
   const nav = useNavigate();
-  const pokemonId = useSignal(1); //Para valores primitivos (bool, string, number)
-  const showBackImage = useSignal(false);
-  const isPokeVisible = useSignal(true);
-  //Función envuelta en $ hace que sea serializable
-  const changePokemonId = $((value: number) => {
-    if (pokemonId.value + value <= 0) return;
+  const {
+    pokemonId,
+    isPokemonVisible,
+    showBackImage,
+    nextPokemon,
+    prevPokemon,
+    toggleFromBack,
+    toggleVisible,
+  } = usePokemonGame();
 
-    pokemonId.value += value;
-  });
-
-  const goToPokemon = $(() => {
-    nav(`pokemon/${pokemonId.value}/`);
+  const goToPokemon = $((id: number) => {
+    nav(`pokemon/${id}/`);
   });
 
   //para arreglos y objetos useStore();
@@ -25,47 +26,35 @@ export default component$(() => {
   return (
     <>
       <span class="text-5xl">PoKeKosas</span>
-      <span class="text-9xl">{pokemonId}</span>
+      <span class="text-9xl">{pokemonId.value}</span>
 
       <div
         style="border: 7px red solid"
         onClick$={() => {
-          goToPokemon();
+          goToPokemon(pokemonId.value);
         }}
       >
         <PokemonImage
           id={pokemonId.value}
           backImage={showBackImage.value}
-          isVisible={isPokeVisible.value}
+          isVisible={isPokemonVisible.value}
         />
       </div>
 
       <div class="mt-2">
-        <button
-          onClick$={() => changePokemonId(-1)}
-          class="btn btn-primary mr-2"
-        >
+        <button onClick$={prevPokemon} class="btn btn-primary mr-2">
           Anterior
         </button>
 
-        <button
-          onClick$={() => changePokemonId(+1)}
-          class="btn btn-primary mr-2"
-        >
+        <button onClick$={nextPokemon} class="btn btn-primary mr-2">
           Siguientes
         </button>
 
-        <button
-          onClick$={() => (isPokeVisible.value = !isPokeVisible.value)}
-          class="btn btn-primary mr-2"
-        >
-          {isPokeVisible.value ? "Ocultar" : "Mostrar"}
+        <button onClick$={toggleVisible} class="btn btn-primary mr-2">
+          {isPokemonVisible.value ? "Ocultar" : "Mostrar"}
         </button>
 
-        <button
-          onClick$={() => (showBackImage.value = !showBackImage.value)}
-          class="btn btn-primary"
-        >
+        <button onClick$={toggleFromBack} class="btn btn-primary">
           Girar
         </button>
       </div>
