@@ -41,6 +41,6 @@
     "vite-tsconfig-paths": "4.2.0"
   },
   "dependencies": {
-    "openai": "^3.3.0"
+    
   }
 }

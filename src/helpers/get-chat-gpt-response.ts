@@ -1,8 +1,9 @@
-import { Configuration, OpenAIApi } from "openai";
+//import { Configuration, OpenAIApi } from "openai";
+//=import { Configuration, OpenAIApi } from "openai";
 
-const configuration = new Configuration({
+/* const configuration = new Configuration({
   apiKey: import.meta.env.PUBLIC_OPEN_AI_KEY,
-});
+}); */
 //const openai = new OpenAIApi(configuration);
 
 export const getFunFactAboutPokemon = async (
