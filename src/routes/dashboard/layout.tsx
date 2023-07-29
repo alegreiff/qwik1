@@ -9,7 +9,6 @@ if( jwtCookie?.value === 'esto_es_un_jwt-token' ){
   console.log( 'Valor de Cookie:', jwtCookie )
   return;
 }
-
 redirect(302, '/login')
 })
 
